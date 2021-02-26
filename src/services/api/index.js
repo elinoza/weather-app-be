@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 
 const apiRouter = express.Router();
 
-apiRouter.get("/:city/:", async (req, res, next) => {
+apiRouter.get("/:city", async (req, res, next) => {
   try {
     const url = process.env.WEATHER_APP_URL;
     const key = process.env.WEATHER_APP_KEY;
