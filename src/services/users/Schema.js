@@ -1,5 +1,7 @@
 const { Schema, model } = require("mongoose");
+
 const bcrypt = require("bcryptjs");
+
 
 const UserSchema = new Schema(
   {
@@ -21,8 +23,6 @@ const UserSchema = new Schema(
     favs:[
       {
         favCity: String
-      
-      
       }
     ]
     
@@ -51,9 +51,13 @@ UserSchema.methods.toJSON = function () {
 UserSchema.pre("save", async function (next) {
   const user= this
   const plainPW = user.password
-
+// Only run this function below if password was moddified (not on other update functions)
   if (user.isModified("password")) {
+      // Hash password with strength of 10
     user.password = await bcrypt.hash(plainPW, 10)
+
+     //remove the confirm field 
+  //this.passwordConfirm = undefined;
   }
   next()
 })

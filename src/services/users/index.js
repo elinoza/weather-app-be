@@ -51,7 +51,6 @@ userRouter.get(
 // get single user
 userRouter.get("/me", authorize, async (req, res, next) => {
 
-
   try {
 
     res.send(req.user);
@@ -99,7 +98,7 @@ userRouter.post("/", async (req, res, next) => {
     next(error);
   }
 });
-
+// user logins here
 userRouter.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
