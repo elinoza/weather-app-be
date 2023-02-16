@@ -1,8 +1,7 @@
 const express = require("express");
-
 const UserSchema = require("./Schema");
+const favSchema = require("../favs/schema");
 const passport = require("passport");
-const fetch = require("node-fetch");
 
 const { authenticate } = require("../auth/tools");
 const { authorize } = require("../auth/middleware");
@@ -54,6 +53,7 @@ userRouter.get("/me", authorize, async (req, res, next) => {
 
 
   try {
+
     res.send(req.user);
   } catch (error) {
     next(error);
@@ -62,7 +62,7 @@ userRouter.get("/me", authorize, async (req, res, next) => {
 
 // edit user
 
-userRouter.put("/me", authorize, async (req, res, next) => {
+userRouter.put("/me",  async (req, res, next) => {
 
 
   try {
@@ -77,7 +77,7 @@ userRouter.put("/me", authorize, async (req, res, next) => {
 });
 
 // delete user
-userRouter.delete("/me", authorize, async (req, res, next) => {
+userRouter.delete("/me",  async (req, res, next) => {
 
   try {
     await res.user.deleteOne();
@@ -123,7 +123,7 @@ userRouter.post("/login", async (req, res, next) => {
     next(error);
   }
 });
-userRouter.post("/logout", authorize, async (req, res, next) => {
+userRouter.post("/logout",  async (req, res, next) => {
   try {
     // find the user's refresh token
     req.user.accessToken = req.user.accessToken.filter(
@@ -137,5 +137,133 @@ userRouter.post("/logout", authorize, async (req, res, next) => {
     next(error);
   }
 });
+
+
+/// EMBEDDING FAVS
+
+userRouter.post("/:id/favs", async (req, res, next) => {
+  try {
+ 
+   
+    const fav= new favSchema(req.body)
+    console.log ("req body:",req.body)
+    
+    const favToInsert = { ...fav.toObject()}
+    console.log(fav,favToInsert)
+
+const updated = await UserSchema.findByIdAndUpdate(
+  req.params.id,
+  {
+    $push: {
+      favs: favToInsert,
+    },
+  },
+  { runValidators: true, new: true }
+)
+res.status(201).send(updated)
+   
+  } catch (error) {
+    next(error)
+  }
+})
+
+userRouter.get("/:id/favs", async (req, res, next) => {
+  try {
+    const { favs} = await UserSchema.findById(req.params.id, {
+      favs: 1,
+      _id: 0,
+    })
+    res.send(favs)
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
+userRouter.get("/:id/favs/:favId", async (req, res, next) => {
+  try {
+    const {favs} = await UserSchema.findOne(
+      {
+        _id: mongoose.Types.ObjectId(req.params.id),
+      },
+      {
+        _id: 0,
+      favs: {
+          $elemMatch: { _id: mongoose.Types.ObjectId(req.params.favId) },
+        },
+      }
+    )
+
+    if (favs && favs.length > 0) {
+      res.send(favs[0])
+    } else {
+      next()
+    }
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
+userRouter.delete("/:id/favs/:favId", async (req, res, next) => {
+  try {
+    const modifiedfav= await UserSchema.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          favs: { _id: mongoose.Types.ObjectId(req.params.favId) },
+        },
+      },
+      {
+        new: true,
+      }
+    )
+    res.send(modifiedfav)
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
+userRouter.put("/:id/favs/:favId", async (req, res, next) => {
+  try {
+    const { favs} = await UserSchema.findOne(
+      {
+        _id: mongoose.Types.ObjectId(req.params.id),
+      },
+      {
+        _id: 0,
+        favs: {
+          $elemMatch: { _id: mongoose.Types.ObjectId(req.params.favId) },
+        },
+      }
+    )
+
+    if (favs&& favs.length > 0) {
+     
+      const favToReplace = { ...favs[0].toObject(), ...req.body }
+
+      const modifiedfav= await UserSchema.findOneAndUpdate(
+        {
+          _id: mongoose.Types.ObjectId(req.params.id),
+          "favs._id": mongoose.Types.ObjectId(req.params.favId),
+        },
+        { $set: { "favs.$": favToReplace } },
+        {
+          runValidators: true,
+          new: true,
+        }
+      )
+      res.send(modifiedfav)
+    } else {
+      next()
+    }
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
+
 
 module.exports = userRouter;

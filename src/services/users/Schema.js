@@ -18,6 +18,13 @@ const UserSchema = new Schema(
     googleId:{
       type:String
     },
+    favs:[
+      {
+        favCity: String
+      
+      
+      }
+    ]
     
     // refreshTokens: [
     //   {

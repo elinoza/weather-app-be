@@ -16,6 +16,7 @@ const {
 const userRoutes = require("./services/users/index");
 
 const apiRoutes = require("./services/api/index");
+const favsRoutes = require("./services/favs/index");
 
 
 const server = express();
@@ -40,6 +41,7 @@ const corsOptions = {
 server.use(cors(corsOptions));
 server.use("/users", userRoutes);
 server.use("/api", apiRoutes);
+server.use("/favs", favsRoutes);
 
 server.use(badRequestHandler);
 server.use(forbiddenHandler);
