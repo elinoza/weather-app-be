@@ -70,9 +70,9 @@ UserSchema .statics.findByCredentials = async function(email, plainPW)  {
     console.log("isMatch?",isMatch)
     if (isMatch) 
     return user
-    else return null
+    else return console.log("user isnt matched user:",user)
   } else {
-    return null
+    return console.log( "findbycredential problem user:",user)
   }
 }
 
