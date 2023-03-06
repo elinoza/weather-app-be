@@ -6,13 +6,16 @@ const bcrypt = require("bcryptjs");
 const UserSchema = new Schema(
   {
     name: {
-      type: String
+      type: String,
+   
     },
     surname: {
       type: String
     },
     email: {
-      type: String
+      type: String,  
+      required: true,
+      unique: true,
     },
     password: {
       type: String
@@ -64,15 +67,17 @@ UserSchema.pre("save", async function (next) {
 
 UserSchema .statics.findByCredentials = async function(email, plainPW)  {
   const user = await this.findOne({ email })
-  
+  console.log("user",user)
   if (user) {
+   
     const isMatch = await bcrypt.compare(plainPW, user.password)
     console.log("isMatch?",isMatch)
     if (isMatch) 
     return user
-    else return console.log("user isnt matched user:",user)
+
+    else return null
   } else {
-    return console.log( "findbycredential problem user:",user)
+    return null
   }
 }
 

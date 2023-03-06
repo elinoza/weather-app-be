@@ -90,6 +90,7 @@ userRouter.delete("/me",  async (req, res, next) => {
 //post a new user
 userRouter.post("/", async (req, res, next) => {
   try {
+
     const newUser = new UserSchema(req.body);
     const { _id } = await newUser.save();
 
@@ -104,7 +105,8 @@ userRouter.post("/login", async (req, res, next) => {
     const { email, password } = req.body;
     const user = await UserSchema.findByCredentials(email, password);
     console.log(user);
-    const { accessToken } = await authenticate(user);
+
+    if(user){  const { accessToken } = await authenticate(user);
     console.log(accessToken);
     // without cookies res.send(tokens)
     //  Send back tokens
@@ -117,7 +119,14 @@ userRouter.post("/login", async (req, res, next) => {
     //   path: "/users/refreshToken",
     // })
 
-    res.send(accessToken);
+    res.send(accessToken);}
+    else{
+      //user not found or password &user is not matched
+      const error = new Error();
+      error.httpStatusCode = 404;
+      next(error);
+    }
+  
   } catch (error) {
     next(error);
   }
