@@ -2,6 +2,7 @@ const express = require("express");
 const UserSchema = require("./Schema");
 const favSchema = require("../favs/schema");
 const passport = require("passport");
+const mongoose = require("mongoose")
 
 const { authenticate } = require("../auth/tools");
 const { authorize } = require("../auth/middleware");
