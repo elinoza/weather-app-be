@@ -3,11 +3,12 @@ const fetch = require("node-fetch");
 
 const apiRouter = express.Router();
 
-apiRouter.get("/:city", async (req, res, next) => {
+apiRouter.get("/:geoCoo", async (req, res, next) => {
   try {
     const url = process.env.WEATHER_APP_URL;
     const key = process.env.WEATHER_APP_KEY;
-    let query = `forecast?q=${req.params.city}&appid=${key}`;
+    let query = `forecast?${req.params.geoCoo}&appid=${key}`;
+    console.log(req.params.geoCoo)
     let response = await fetch(url + query);
     let weather = await response.json();
     res.send(weather);
