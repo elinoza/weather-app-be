@@ -11,6 +11,7 @@ apiRouter.get("/:geoCoo", async (req, res, next) => {
     console.log(req.params.geoCoo)
     let response = await fetch(url + query);
     let weather = await response.json();
+    console.log(response,weather)
     res.send(weather);
   } catch (error) {
     next(error);
