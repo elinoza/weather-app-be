@@ -49,6 +49,7 @@ userRouter.get(
 // get single user
 userRouter.get("/me", authorize, async (req, res, next) => {
   try {
+
     res.send(req.user);
   } catch (error) {
     next(error);
@@ -142,7 +143,7 @@ userRouter.post("/logout", async (req, res, next) => {
 userRouter.post("/:id/favs",  authorize,async (req, res, next) => {
   try {
     const fav = new favSchema(req.body);
-    console.log("req body:", req.body);
+  
 
     const favToInsert = { ...fav.toObject() };
     console.log(fav, favToInsert);
