@@ -1,31 +1,33 @@
 const { Schema, model } = require("mongoose");
+
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new Schema(
   {
     name: {
-      type: String
+      type: String,
     },
     surname: {
-      type: String
+      type: String,
     },
     email: {
-      type: String
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-      type: String
+      type: String,
     },
-    googleId:{
-      type:String
+    googleId: {
+      type: String,
     },
-    favs:[
+    favs: [
       {
-        favCity: String
-      
-      
-      }
-    ]
-    
+        favCity: String,
+   geoCoo:String
+      },
+    ],
+
     // refreshTokens: [
     //   {
     //     token: {
@@ -37,41 +39,41 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-
 UserSchema.methods.toJSON = function () {
-  const user = this
-  const userObject = user.toObject()
+  const user = this;
+  const userObject = user.toObject();
 
-  delete userObject.password
-  delete userObject.__v
+  delete userObject.password;
+  delete userObject.__v;
 
-  return userObject
-}
+  return userObject;
+};
 
 UserSchema.pre("save", async function (next) {
-  const user= this
-  const plainPW = user.password
-
+  const user = this;
+  const plainPW = user.password;
+  // Only run this function below if password was moddified (not on other update functions)
   if (user.isModified("password")) {
-    user.password = await bcrypt.hash(plainPW, 10)
-  }
-  next()
-})
+    // Hash password with strength of 10
+    user.password = await bcrypt.hash(plainPW, 10);
 
-UserSchema .statics.findByCredentials = async function(email, plainPW)  {
-  const user = await this.findOne({ email })
-  
+    //remove the confirm field
+    //this.passwordConfirm = undefined;
+  }
+  next();
+});
+
+UserSchema.statics.findByCredentials = async function (email, plainPW) {
+  const user = await this.findOne({ email });
+  console.log("user", user);
   if (user) {
-    const isMatch = await bcrypt.compare(plainPW, user.password)
-    console.log("isMatch?",isMatch)
-    if (isMatch) 
-    return user
-    else return null
+    const isMatch = await bcrypt.compare(plainPW, user.password);
+    console.log("isMatch?", isMatch);
+    if (isMatch) return user;
+    else return null;
   } else {
-    return null
+    return null;
   }
-}
-
-
+};
 
 module.exports = model("user", UserSchema);
