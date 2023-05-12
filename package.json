@@ -1,5 +1,5 @@
 {
-  "name": "spotify-authentication-be",
+  "name": "weather-app-be",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elinoza/spotify-authentication-be.git"
+    "url": "git+https://github.com/elinoza/weather-app-be.git"
   },
-  "author": "Alaa Eddine",
+  "author": "Hilal Semercioglu",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/elinoza/spotify-authentication-be/issues"
+    "url": "https://github.com/elinoza/weather-app-be/issues"
   },
-  "homepage": "https://github.com/elinoza/spotify-authentication-be#readme",
+  "homepage": "https://github.com/elinoza/weather-app-be#readme",
   "dependencies": {
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
