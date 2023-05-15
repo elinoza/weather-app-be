@@ -63,3 +63,5 @@ mongoose
     })
   )
   .catch(console.error);// server listening is primary
+  
+module.exports=server
