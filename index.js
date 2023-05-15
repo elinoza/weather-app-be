@@ -4,20 +4,20 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
-const oauth = require("./services/auth/oauth");
+const oauth = require("./src/services/auth/oauth");
 
 const {
   notFoundHandler,
   forbiddenHandler,
   badRequestHandler,
   genericErrorHandler,
-} = require("./errorHandlers");
+} = require("./src/errorHandlers");
 
 
 //API ROUTES are Primary
-const userRoutes = require("./services/users/index");
-const apiRoutes = require("./services/api/index");
-const favsRoutes = require("./services/favs/index");
+const userRoutes = require("./src/services/users/index");
+const apiRoutes = require("./src/services/api/index");
+const favsRoutes = require("./src/services/favs/index");
 
 const server = express();//Primary
 
