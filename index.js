@@ -37,7 +37,7 @@ const corsOptions = {
   credentials: true,// this makes cookies allowed.by default it s not allowed
 };
 
-server.use(cors(corsOptions));
+server.use(cors());
 server.use("/users", userRoutes);
 server.use("/api", apiRoutes);
 server.use("/favs", favsRoutes);
