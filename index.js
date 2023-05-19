@@ -25,7 +25,7 @@ server.use(express.json());//express.json() is a built-in middleware function in
 server.use(cookieParser());//we're using cookie-parser as middleware to read and write cookies.Without cookie-parser, we would need to manually parse the cookie header from the incoming request and set cookies on the response using the Set-Cookie header. However, using cookie-parser simplifies this process and makes it easier to work with cookies in an Express.js app.
 server.use(passport.initialize());// a middleware function in the Passport.js authentication framework that is used to initialize Passport and set up the authentication session. It is typically used in an Express.js app to enable authentication and handle user login and logout requests.
 
-const whitelist = ["https://weather-app-elinoza.vercel.app/","http://localhost:3000"];
+const whitelist = ["https://weather-app-elinoza.vercel.app","http://localhost:3000"];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
