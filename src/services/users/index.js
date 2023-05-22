@@ -3,6 +3,7 @@ const UserSchema = require("./Schema");
 const favSchema = require("../favs/schema");
 const passport = require("passport");
 const mongoose = require("mongoose")
+const sgMail = require("@sendgrid/mail")
 
 const { authenticate } = require("../auth/tools");
 const { authorize } = require("../auth/middleware");
@@ -260,5 +261,42 @@ userRouter.put("/:id/favs/:favId", async (req, res, next) => {
     next(error);
   }
 });
+
+
+
+
+//sending password to email adress
+userRouter.post("/send/email",async (req,res,next)=>{
+  try {
+
+    const { email } = req.body;
+    const password = await UserSchema.findByEmail(email);
+    console.log("rq.body",req.body.email,"password",password)
+  if (password){
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+    const msg = {
+      to: email,
+      from: "hillcakmak@gmail.com",
+      subject: "Your Password for Weather App",
+      text: "Your password for the Weather App is:"+password+" Click here for the website: https://weather-app-elinoza.vercel.app/",
+      html: "<strong>Your Password for Weather App</strong>",
+    }
+    await sgMail.send(msg)
+    res.send("Password is sent to your email")
+  }
+  else{
+     //user not found or password not found
+     const error = new Error();
+     error.httpStatusCode = 404;
+     next(error);
+
+  }
+    
+  } catch (error) {
+    next(error)
+    
+  }
+})
 
 module.exports = userRouter;

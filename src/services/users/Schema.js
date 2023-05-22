@@ -76,4 +76,11 @@ UserSchema.statics.findByCredentials = async function (email, plainPW) {
   }
 };
 
+UserSchema.statics.findByEmail=async function (email){
+  const user = await this.findOne({ email });
+  console.log("user", user);
+  if(user){ return user.password }
+  else{ return null}
+}
+
 module.exports = model("user", UserSchema);
