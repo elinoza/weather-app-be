@@ -84,10 +84,12 @@ userRouter.delete("/me", async (req, res, next) => {
 //post a new user
 userRouter.post("/", async (req, res, next) => {
   try {
-    const newUser = new UserSchema(req.body);
-    const { _id } = await newUser.save();
 
-    res.status(201).send(_id);
+      const newUser = new UserSchema(req.body);
+      const { _id } = await newUser.save();
+  
+      res.status(201).send(_id);
+    
   } catch (error) {
     next(error);
   }
@@ -284,7 +286,7 @@ userRouter.post("/send/email",async (req,res,next)=>{
       from: "helenstudyo@gmail.com",
       subject: "Your reset link Password for Weather App",
       text: "Your password reset link for the Weather App ",
-      html: ` <a  href="${link}">You reset your your password here.</a>`,
+      html: ` <a  href="${link}">You reset your password here.</a>`,
     }
    await sgMail.send(msg)
     res.send("Password link is sent to your email")
