@@ -59,12 +59,12 @@ userRouter.get("/me", authorize, async (req, res, next) => {
 
 // edit user
 
-userRouter.put("/me", async (req, res, next) => {
+userRouter.put("/me",authorize, async (req, res, next) => {
   try {
     const updates = Object.keys(req.body);
     updates.forEach((update) => (req.user[update] = req.body[update]));
     await req.user.save();
-    res.send(res.user);
+    res.send(req.user);
     res.send(updates);
   } catch (error) {
     next(error);
@@ -270,20 +270,24 @@ userRouter.post("/send/email",async (req,res,next)=>{
   try {
 
     const { email } = req.body;
-    const password = await UserSchema.findByEmail(email);
-    console.log("rq.body",req.body.email,"password",password)
-  if (password){
+    const user = await UserSchema.findByEmail(email);
+    console.log("rq.body",req.body.email,"user",user)
+  if (user){
+    const { accessToken } = await authenticate(user);
+    console.log(accessToken);
+    let link=`http://localhost:3000/Reset?accessToken=${accessToken}`;
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
 
     const msg = {
       to: email,
-      from: "hillcakmak@gmail.com",
-      subject: "Your Password for Weather App",
-      text: "Your password for the Weather App is:"+password+" Click here for the website: https://weather-app-elinoza.vercel.app/",
-      html: "<strong>Your Password for Weather App</strong>",
+      from: "helenstudyo@gmail.com",
+      subject: "Your reset link Password for Weather App",
+      text: "Your password reset link for the Weather App ",
+      html: ` <a  href="${link}">You reset your your password here.</a>`,
     }
-    await sgMail.send(msg)
-    res.send("Password is sent to your email")
+   await sgMail.send(msg)
+    res.send("Password link is sent to your email")
   }
   else{
      //user not found or password not found
