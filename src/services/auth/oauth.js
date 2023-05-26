@@ -18,9 +18,10 @@ passport.use(
       try {
         const email= await UserSchema.findOne({email:profile.emails[0].value})
         if(email){  //email is already in database,please provide your password and login
-          const error = new Error("email is already in database,please provide your password and login");
-          error.httpStatusCode = 400;
-          next(error);}
+          // const error = new Error("email is already in database,please provide your password and login");
+          // error.httpStatusCode = 400;
+          // next(error);
+        res.send("email already in database")}
         else{
 
 
