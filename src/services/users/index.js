@@ -289,7 +289,7 @@ userRouter.post("/send/email",async (req,res,next)=>{
       html: ` <a  href="${link}">You reset your password here.</a>`,
     }
    await sgMail.send(msg)
-    res.send("Password link is sent to your email")
+    res.status(201).send("Password link is sent to your email")
   }
   else{
      //user not found or password not found
