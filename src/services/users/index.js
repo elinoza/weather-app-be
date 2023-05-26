@@ -22,7 +22,9 @@ userRouter.get("/", async (req, res, next) => {
 
 userRouter.get(
   "/googleLogin",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"] }),
+  console.log(email)
+
 );
 
 userRouter.get(
