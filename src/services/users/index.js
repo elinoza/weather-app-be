@@ -277,8 +277,9 @@ userRouter.post("/send/email",async (req,res,next)=>{
     console.log("rq.body",req.body.email,"user",user)
   if (user){
     const { accessToken } = await authenticate(user);
-    console.log(accessToken,user);
-  //   let link=`${process.env.DEPLOYED_FRONTEND}/Reset?accessToken=${accessToken}`;
+ 
+ let link=`${process.env.DEPLOYED_FRONTEND}/Reset?accessToken=${accessToken}`;
+ console.log(accessToken,process.env.DEPLOYED_FRONTEND,link);
   //   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
