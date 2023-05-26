@@ -16,6 +16,15 @@ passport.use(
      
 
       try {
+        const email= await UserSchema.findOne({email:profile.emails[0].value})
+        if(email){  //email is already in database,please provide your password and login
+          const error = new Error("email is already in database,please provide your password and login");
+          error.httpStatusCode = 400;
+          next(error);}
+        else{
+
+
+
         const user = await UserSchema.findOne({ googleId: profile.id })
 
         if (user) {
@@ -34,7 +43,7 @@ passport.use(
           const tokens = await authenticate(createdUser)
           
           next(null, { user: createdUser, tokens })
-        }
+        }}
       } catch (error) {
           console.log(error)
         next(error)
