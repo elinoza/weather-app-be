@@ -21,7 +21,8 @@ passport.use(
           // const error = new Error("email is already in database,please provide your password and login");
           // error.httpStatusCode = 400;
           // next(error);
-        res.send("email already in database")}
+          next(null)}
+      
         else{
 
 
