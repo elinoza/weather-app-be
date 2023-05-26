@@ -279,7 +279,7 @@ userRouter.post("/send/email",async (req,res,next)=>{
     const { accessToken } = await authenticate(user);
     console.log(accessToken);
     let link=`${process.env.DEPLOYED_FRONTEND}/Reset?accessToken=${accessToken}`;
-    //sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
     const msg = {
@@ -289,7 +289,7 @@ userRouter.post("/send/email",async (req,res,next)=>{
       text: "Your password reset link for the Weather App ",
       html: ` <a  href="${link}">You reset your password here.</a>`,
     }
-   //await sgMail.send(msg)
+  await sgMail.send(msg)
     res.status.send("Password link is sent to your email")
   }
   else{
