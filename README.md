@@ -1,5 +1,5 @@
 # 🌤️ Weather App 🌦️
-🌦️ Weather App is a web application that provides weather information for cities around the world. Users can sign up with their email address or log in with their Google account. Upon their first login, the application shows the weather information for their location. Users can search for and add cities to their favorites list. The list is displayed in the sidebar along with the weather information for each city. If the screen size is small, users can access the sidebar through the hamburger menu. The weather data is obtained from the openweatherapp.org API. The application changes its theme/background image according to the weather. This is achieved using useContext.
+🌦️ Weather App is a web application that provides weather information for cities around the world. Users can sign up with their email address or log in with their Google account. Upon their first login, the application shows the weather information for their location. Users can search for and add cities to their favorites list. The list is displayed in the sidebar along with the weather information for each city. If the screen size is small, users can access the sidebar through the hamburger menu. The weather data is obtained from the openweatherapp.org API. The application changes its theme/background image according to the weather. This is achieved using useContext.This project integrates SendGrid into a web application to enable email functionality. Users can  reset password through email using SendGrid's email delivery platform.
 
 
 # 🔧 Technologies Used
@@ -21,10 +21,13 @@
 
 🔧 `MongoDB`  for  storing and retrieving  of user  data.Embedding modeling for storing favs data  in User Schema.
 
+🔧 `SendGrid`  for email delivery when user chooses to reset his/her password.`
+
 
 
 # 🚀 Features
 - User authentication and authorization using email and Google sign-in.
+- User can  reset password through email using SendGrid's email delivery platform with accessToken delivered by email .
 - Weather data fetched from OpenWeather API.
 - Automatic location detection on first login.
 - Ability to search for cities and add them to favorites.
@@ -51,6 +54,8 @@ WEATHER_APP_URL=http://api.openweathermap.org/data/2.5/
 WEATHER_APP_CONVERTER_URL=http://api.openweathermap.org/geo/1.0/
 BACKEND_URL=http://localhost:3005
 FRONTEND_URL=http://localhost:3000
+SENDGRID_API_KEY="SG**********************"
+DEPLOYED_FRONTEND=https://weather-app-elinoza.vercel.app
 ```
 
 - Run the app with npm start.
